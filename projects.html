@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Riley Brown</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.03) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: #1a1a1a;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 120px 40px;
+        }
+        
+        .back-link {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 4px;
+            margin-bottom: 60px;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .back-link:hover::after {
+            animation: underlineGlow 0.6s ease-in-out infinite alternate;
+        }
+        
+        .back-link:hover {
+            color: #667eea;
+            transform: translateY(-1px);
+        }
+        
+        @keyframes underlineGlow {
+            0% {
+                transform: scaleX(1);
+                box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+            }
+            100% {
+                transform: scaleX(1);
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.8), 0 0 30px rgba(118, 75, 162, 0.6);
+            }
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            margin-bottom: 40px;
+            letter-spacing: -0.02em;
+        }
+        
+        .projects-grid {
+            display: grid;
+            gap: 40px;
+        }
+        
+        .project-item {
+            padding: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .project-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+        
+        .project-description {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .tech-tag {
+            background: linear-gradient(120deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #667eea;
+            font-weight: 500;
+        }
+        
+        .project-status {
+            font-size: 0.9rem;
+            color: #999;
+            margin-top: 15px;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 20px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .project-item {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Home</a>
+        
+        <h1>Projects</h1>
+        
+        <div class="projects-grid">
+            <div class="project-item">
+                <h3 class="project-title">AI Content Studio</h3>
+                <p class="project-description">A comprehensive platform for creators to leverage AI in their content production workflow. Features include automated editing, intelligent content suggestions, and seamless integration with popular creative tools.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">React</span>
+                    <span class="tech-tag">Node.js</span>
+                    <span class="tech-tag">OpenAI</span>
+                    <span class="tech-tag">AWS</span>
+                </div>
+                <div class="project-status">Active Development</div>
+            </div>
+            
+            <div class="project-item">
+                <h3 class="project-title">Neural Storyteller</h3>
+                <p class="project-description">An experimental AI system that generates compelling narratives based on user prompts and emotional context. This project explores the boundaries of <span class="highlight">creative AI</span> and its potential in interactive storytelling.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">TensorFlow</span>
+                    <span class="tech-tag">GPT-4</span>
+                    <span class="tech-tag">Flask</span>
+                </div>
+                <div class="project-status">Research Phase</div>
+            </div>
+            
+            <div class="project-item">
+                <h3 class="project-title">Digital Muse</h3>
+                <p class="project-description">A creative assistant designed to help artists and writers overcome creative blocks. Uses advanced AI models to provide inspiration, generate ideas, and offer constructive feedback on creative works.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Vue.js</span>
+                    <span class="tech-tag">Firebase</span>
+                    <span class="tech-tag">Claude</span>
+                    <span class="tech-tag">WebGL</span>
+                </div>
+                <div class="project-status">Beta Testing</div>
+            </div>
+            
+            <div class="project-item">
+                <h3 class="project-title">AI Ethics Framework</h3>
+                <p class="project-description">An open-source framework for implementing ethical guidelines in AI development. Provides tools and best practices for ensuring responsible AI deployment across various industries.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">TypeScript</span>
+                    <span class="tech-tag">Next.js</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">Docker</span>
+                </div>
+                <div class="project-status">Open Source</div>
+            </div>
+            
+            <div class="project-item">
+                <h3 class="project-title">Virtual Producer</h3>
+                <p class="project-description">An AI-powered video production assistant that helps creators plan, shoot, and edit professional-quality content. Includes automated shot suggestions, equipment recommendations, and post-production guidance.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">React Native</span>
+                    <span class="tech-tag">Computer Vision</span>
+                    <span class="tech-tag">ML Kit</span>
+                    <span class="tech-tag">Swift</span>
+                </div>
+                <div class="project-status">In Development</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

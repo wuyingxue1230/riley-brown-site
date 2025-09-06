@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videos - Riley Brown</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.03) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: #1a1a1a;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 120px 40px;
+        }
+        
+        .back-link {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 4px;
+            margin-bottom: 60px;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .back-link:hover::after {
+            animation: underlineGlow 0.6s ease-in-out infinite alternate;
+        }
+        
+        .back-link:hover {
+            color: #667eea;
+            transform: translateY(-1px);
+        }
+        
+        @keyframes underlineGlow {
+            0% {
+                transform: scaleX(1);
+                box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+            }
+            100% {
+                transform: scaleX(1);
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.8), 0 0 30px rgba(118, 75, 162, 0.6);
+            }
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            margin-bottom: 40px;
+            letter-spacing: -0.02em;
+        }
+        
+        .video-grid {
+            display: grid;
+            gap: 40px;
+        }
+        
+        .video-item {
+            padding: 30px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .video-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+        
+        .video-description {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        .video-meta {
+            font-size: 0.9rem;
+            color: #999;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 20px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .video-item {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Home</a>
+        
+        <h1>Videos</h1>
+        
+        <div class="video-grid">
+            <div class="video-item">
+                <h3 class="video-title">The Future of AI Content Creation</h3>
+                <p class="video-description">Exploring how artificial intelligence is revolutionizing the way we create and consume digital content. This comprehensive overview covers the latest tools and techniques shaping the industry.</p>
+                <div class="video-meta">45 min • Technology • 2024</div>
+            </div>
+            
+            <div class="video-item">
+                <h3 class="video-title">Building Your First AI Assistant</h3>
+                <p class="video-description">A step-by-step guide to creating your own AI-powered assistant using modern machine learning frameworks. Perfect for developers and enthusiasts looking to enter the AI space.</p>
+                <div class="video-meta">32 min • Tutorial • 2024</div>
+            </div>
+            
+            <div class="video-item">
+                <h3 class="video-title">AI in Business: Real World Applications</h3>
+                <p class="video-description">Case studies and interviews with industry leaders who have successfully integrated AI into their business operations. Learn from <span class="highlight">real-world examples</span> and success stories.</p>
+                <div class="video-meta">28 min • Business • 2024</div>
+            </div>
+            
+            <div class="video-item">
+                <h3 class="video-title">The Ethics of Artificial Intelligence</h3>
+                <p class="video-description">A thoughtful exploration of the ethical considerations surrounding AI development and deployment. Discussing bias, privacy, and the responsibility of creators in the AI age.</p>
+                <div class="video-meta">38 min • Philosophy • 2024</div>
+            </div>
+            
+            <div class="video-item">
+                <h3 class="video-title">Creative AI: Art, Music, and Writing</h3>
+                <p class="video-description">Discover how AI is transforming creative industries. From generative art to AI-composed music, this video showcases the incredible potential of machine learning in creative fields.</p>
+                <div class="video-meta">41 min • Creative • 2024</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

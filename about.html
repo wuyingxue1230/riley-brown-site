@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Riley Brown</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.03) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: #1a1a1a;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 120px 40px;
+        }
+        
+        .back-link {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 4px;
+            margin-bottom: 60px;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .back-link:hover::after {
+            animation: underlineGlow 0.6s ease-in-out infinite alternate;
+        }
+        
+        .back-link:hover {
+            color: #667eea;
+            transform: translateY(-1px);
+        }
+        
+        @keyframes underlineGlow {
+            0% {
+                transform: scaleX(1);
+                box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+            }
+            100% {
+                transform: scaleX(1);
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.8), 0 0 30px rgba(118, 75, 162, 0.6);
+            }
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            margin-bottom: 40px;
+            letter-spacing: -0.02em;
+        }
+        
+        .content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .content p {
+            margin-bottom: 30px;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 20px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Home</a>
+        
+        <h1>About</h1>
+        
+        <div class="content">
+            <p>Riley Brown is a pioneering AI creator and digital storyteller who explores the fascinating intersection of artificial intelligence and human creativity. Through innovative content creation and cutting-edge technology, Riley brings unique perspectives to the digital landscape.</p>
+            
+            <p>With a background in both technical expertise and creative arts, Riley has established himself as a thought leader in the AI content creation space. His work focuses on <span class="highlight">democratizing AI technology</span> and making it accessible to creators and businesses alike.</p>
+            
+            <p>Riley's approach combines technical precision with artistic vision, creating content that not only educates but also inspires. His videos and projects showcase the practical applications of AI in various industries, from entertainment to enterprise solutions.</p>
+            
+            <p>Based in the tech hub of innovation, Riley continues to push the boundaries of what's possible with AI, always with a focus on human-centered design and ethical technology deployment.</p>
+        </div>
+    </div>
+</body>
+</html>
