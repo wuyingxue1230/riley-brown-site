@@ -121,6 +121,216 @@
             margin-right: auto;
         }
         
+        .comments-section {
+            margin-top: 100px;
+            padding-top: 60px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .comments-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .comments-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+        
+        .comments-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .comment-form {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .comment-form textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .comment-form textarea:focus {
+            border-color: #667eea;
+        }
+        
+        .comment-form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .comment-submit {
+            background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .comment-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .comment-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .login-prompt {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .login-prompt a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .login-prompt a:hover {
+            text-decoration: underline;
+        }
+        
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .comment {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .comment:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .comment-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        .comment-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .comment-name {
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+        
+        .comment-time {
+            font-size: 0.9rem;
+            color: #999;
+        }
+        
+        .comment-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .like-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .like-btn:hover {
+            color: #667eea;
+        }
+        
+        .like-btn.liked {
+            color: #667eea;
+        }
+        
+        .like-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .comment-content {
+            color: #333;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+        
+        .no-comments {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         @media (max-width: 768px) {
             .container {
                 padding: 80px 20px;
@@ -150,11 +360,269 @@
             <a href="projects.html" class="nav-link">Projects</a>
             <a href="company.html" class="nav-link">Company</a>
             <a href="contact.html" class="nav-link">Contact</a>
+            <a href="chat.html" class="nav-link">Chat with Riley AI</a>
+            <a href="auth.html" class="nav-link">Login</a>
         </nav>
         
         <div class="description">
             <p>Exploring the intersection of artificial intelligence and human creativity through compelling digital experiences and innovative storytelling.</p>
         </div>
+        
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <div class="comments-header">
+                <h2 class="comments-title">Comments</h2>
+                <div class="comments-subtitle">Share your thoughts about Riley's work</div>
+            </div>
+            
+            <!-- Comment Form -->
+            <div class="comment-form">
+                <textarea id="comment-input" placeholder="Share your thoughts..." disabled></textarea>
+                <div class="comment-form-actions">
+                    <div class="login-prompt">
+                        <span id="login-status">Please <a href="auth.html">login</a> to comment</span>
+                    </div>
+                    <button id="comment-submit" class="comment-submit" disabled>Post Comment</button>
+                </div>
+            </div>
+            
+            <!-- Comments List -->
+            <div id="comments-list" class="comments-list">
+                <div class="no-comments">No comments yet. Be the first to share your thoughts!</div>
+            </div>
+        </div>
     </div>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCENIM80o_yE5ineisKjzUy3apgMt87T-k",
+            authDomain: "website-28dc5.firebaseapp.com",
+            projectId: "website-28dc5",
+            storageBucket: "website-28dc5.firebasestorage.app",
+            messagingSenderId: "247226607208",
+            appId: "1:247226607208:web:4a707d856efb1c7020bddd"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Global variables
+        let currentUser = null;
+        let comments = [];
+
+        // Check auth state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                currentUser = user;
+                enableCommenting();
+            } else {
+                currentUser = null;
+                disableCommenting();
+            }
+        });
+
+        function enableCommenting() {
+            const commentInput = document.getElementById('comment-input');
+            const commentSubmit = document.getElementById('comment-submit');
+            const loginStatus = document.getElementById('login-status');
+            
+            commentInput.disabled = false;
+            commentSubmit.disabled = false;
+            loginStatus.innerHTML = `Commenting as <strong>${currentUser.displayName || 'User'}</strong>`;
+        }
+
+        function disableCommenting() {
+            const commentInput = document.getElementById('comment-input');
+            const commentSubmit = document.getElementById('comment-submit');
+            const loginStatus = document.getElementById('login-status');
+            
+            commentInput.disabled = true;
+            commentSubmit.disabled = true;
+            commentInput.value = '';
+            loginStatus.innerHTML = 'Please <a href="auth.html">login</a> to comment';
+        }
+
+        // Submit comment
+        document.getElementById('comment-submit').addEventListener('click', async () => {
+            const commentInput = document.getElementById('comment-input');
+            const content = commentInput.value.trim();
+            
+            if (!content || !currentUser) return;
+
+            const submitBtn = document.getElementById('comment-submit');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="loading"></div>';
+
+            try {
+                await db.collection('comments').add({
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    userName: currentUser.displayName || 'Anonymous',
+                    userAvatar: (currentUser.displayName || 'A').charAt(0).toUpperCase(),
+                    content: content,
+                    likes: [],
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                commentInput.value = '';
+                showMessage('Comment posted successfully!', 'success');
+            } catch (error) {
+                console.error('Error posting comment:', error);
+                showMessage('Failed to post comment. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Post Comment';
+            }
+        });
+
+        // Load comments
+        function loadComments() {
+            const commentsList = document.getElementById('comments-list');
+            
+            db.collection('comments')
+                .orderBy('timestamp', 'desc')
+                .onSnapshot((snapshot) => {
+                    comments = [];
+                    commentsList.innerHTML = '';
+                    
+                    if (snapshot.empty) {
+                        commentsList.innerHTML = '<div class="no-comments">No comments yet. Be the first to share your thoughts!</div>';
+                        return;
+                    }
+                    
+                    snapshot.forEach((doc) => {
+                        const comment = doc.data();
+                        comment.id = doc.id;
+                        comments.push(comment);
+                        renderComment(comment);
+                    });
+                });
+        }
+
+        function renderComment(comment) {
+            const commentsList = document.getElementById('comments-list');
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment';
+            
+            const isLiked = currentUser && comment.likes.includes(currentUser.uid);
+            const likeCount = comment.likes.length;
+            
+            commentDiv.innerHTML = `
+                <div class="comment-header">
+                    <div class="comment-author">
+                        <div class="comment-avatar">${comment.userAvatar}</div>
+                        <div class="comment-info">
+                            <div class="comment-name">${comment.userName}</div>
+                            <div class="comment-time">${formatTimestamp(comment.timestamp)}</div>
+                        </div>
+                    </div>
+                    <div class="comment-actions">
+                        <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${comment.id}')">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                            ${likeCount > 0 ? likeCount : ''}
+                        </button>
+                    </div>
+                </div>
+                <div class="comment-content">${comment.content}</div>
+            `;
+            
+            commentsList.appendChild(commentDiv);
+        }
+
+        async function toggleLike(commentId) {
+            if (!currentUser) {
+                showMessage('Please login to like comments', 'error');
+                return;
+            }
+
+            try {
+                const commentRef = db.collection('comments').doc(commentId);
+                const comment = comments.find(c => c.id === commentId);
+                
+                if (comment.likes.includes(currentUser.uid)) {
+                    // Unlike
+                    await commentRef.update({
+                        likes: firebase.firestore.FieldValue.arrayRemove(currentUser.uid)
+                    });
+                } else {
+                    // Like
+                    await commentRef.update({
+                        likes: firebase.firestore.FieldValue.arrayUnion(currentUser.uid)
+                    });
+                }
+            } catch (error) {
+                console.error('Error toggling like:', error);
+                showMessage('Failed to update like. Please try again.', 'error');
+            }
+        }
+
+        function formatTimestamp(timestamp) {
+            if (!timestamp) return 'Just now';
+            
+            const date = timestamp.toDate();
+            const now = new Date();
+            const diff = now - date;
+            
+            if (diff < 60000) return 'Just now';
+            if (diff < 3600000) return `${Math.floor(diff / 60000)} minutes ago`;
+            if (diff < 86400000) return `${Math.floor(diff / 3600000)} hours ago`;
+            if (diff < 604800000) return `${Math.floor(diff / 86400000)} days ago`;
+            
+            return date.toLocaleDateString();
+        }
+
+        function showMessage(message, type) {
+            // Create message element
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+                background: ${type === 'success' ? '#4caf50' : '#f44336'};
+            `;
+            messageDiv.textContent = message;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 3000);
+        }
+
+        // Initialize comments
+        loadComments();
+
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>

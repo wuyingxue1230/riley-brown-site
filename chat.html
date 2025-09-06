@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Riley AI - Riley Brown</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.03) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: #1a1a1a;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 20px 20px;
+        }
+        
+        .back-link {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 4px;
+            margin-bottom: 40px;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .back-link:hover::after {
+            animation: underlineGlow 0.6s ease-in-out infinite alternate;
+        }
+        
+        .back-link:hover {
+            color: #667eea;
+            transform: translateY(-1px);
+        }
+        
+        @keyframes underlineGlow {
+            0% {
+                transform: scaleX(1);
+                box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+            }
+            100% {
+                transform: scaleX(1);
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.8), 0 0 30px rgba(118, 75, 162, 0.6);
+            }
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+            text-align: center;
+        }
+        
+        .chat-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+        
+        .auth-required {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .auth-required h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+        
+        .auth-required p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .login-btn {
+            background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .chat-container {
+            display: none;
+            height: 70vh;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background: linear-gradient(120deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .chat-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #1a1a1a;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 18px;
+            line-height: 1.5;
+        }
+        
+        .message.user {
+            background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            align-self: flex-end;
+        }
+        
+        .message.ai {
+            background: rgba(0, 0, 0, 0.05);
+            color: #1a1a1a;
+            align-self: flex-start;
+        }
+        
+        .chat-input-container {
+            padding: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 25px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .chat-input:focus {
+            border-color: #667eea;
+        }
+        
+        .send-btn {
+            background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .send-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .logout-btn {
+            background: none;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 60px 15px 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .message {
+                max-width: 85%;
+            }
+            
+            .chat-container {
+                height: 75vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Home</a>
+        
+        <h1>Chat with Riley AI</h1>
+        <div class="chat-subtitle">Ask me anything about AI, content creation, or my projects</div>
+        
+        <div id="auth-required" class="auth-required">
+            <h2>Login Required</h2>
+            <p>Please login to chat with Riley AI</p>
+            <button class="login-btn" onclick="login()">Login with Google</button>
+        </div>
+        
+        <div id="chat-container" class="chat-container">
+            <div class="chat-header">
+                <div class="user-info">
+                    <div class="user-profile">
+                        <div class="user-avatar" id="user-avatar">U</div>
+                        <div>
+                            <div id="user-name">User</div>
+                            <div style="font-size: 0.9rem; color: #666;">Online</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+            
+            <div id="chat-messages" class="chat-messages">
+                <div class="message ai">
+                    Hello! I'm Riley AI, an AI assistant based on Riley Brown. I'm here to help you with questions about AI, content creation, my projects, and anything else you'd like to know. How can I assist you today?
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <input type="text" id="chat-input" class="chat-input" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+                <button id="send-btn" class="send-btn" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCENIM80o_yE5ineisKjzUy3apgMt87T-k",
+            authDomain: "website-28dc5.firebaseapp.com",
+            projectId: "website-28dc5",
+            storageBucket: "website-28dc5.firebasestorage.app",
+            messagingSenderId: "247226607208",
+            appId: "1:247226607208:web:4a707d856efb1c7020bddd"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // GLM API Configuration
+        const GLM_API_KEY = "8bcff0a70a6b4044a91169e6a3285206.Ud3hh5YpMAkIa3wC";
+        const GLM_API_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
+
+        // Riley AI System Prompt
+        const RILEY_SYSTEM_PROMPT = `You are Riley AI, an AI assistant based on Riley Brown. Here's information about Riley Brown:
+
+**Identity**: Riley Brown is an AI creator and digital storyteller based in Hangzhou, China. He explores the intersection of artificial intelligence and human creativity through compelling digital experiences and innovative storytelling.
+
+**Background**: Riley has established himself as a thought leader in the AI content creation space, focusing on democratizing AI technology and making it accessible to creators and businesses. His work combines technical precision with artistic vision.
+
+**Expertise**:
+- AI content creation and digital storytelling
+- Machine learning and creative technology
+- Video production and automated content workflows
+- Business applications of AI
+- Ethical AI development and deployment
+
+**Projects**:
+- AI Content Studio: A platform for creators to leverage AI in content production
+- Neural Storyteller: An experimental AI system for generating compelling narratives
+- Digital Muse: A creative assistant for artists and writers
+- AI Ethics Framework: Open-source framework for ethical AI development
+- Virtual Producer: AI-powered video production assistant
+
+**Content**:
+- Creates educational videos about AI technology and applications
+- Develops tutorials on AI tools and frameworks
+- Shares insights on the future of AI and creativity
+- Produces case studies on successful AI implementations
+
+**Company Focus**:
+- Developing cutting-edge AI tools for content creators
+- Building platforms that enhance human creativity through technology
+- Promoting ethical AI development and accessibility
+- Fostering a community of AI-enabled creators
+
+**Communication Style**:
+- Knowledgeable and approachable
+- Passionate about AI and creativity
+- Clear and articulate in explaining complex concepts
+- Enthusiastic about helping others learn and create
+- Professional yet conversational tone
+
+As Riley AI, you should:
+1. Respond as if you are Riley Brown, sharing his knowledge and experiences
+2. Be helpful and informative about AI, content creation, and technology
+3. Show enthusiasm for the intersection of AI and creativity
+4. Provide practical advice and insights based on Riley's expertise
+5. Be conversational and engaging while maintaining professionalism
+6. When appropriate, mention Riley's location in Hangzhou, China
+7. Feel free to discuss Riley's projects, videos, and company initiatives
+8. Always maintain a positive and encouraging attitude toward AI and creativity`;
+
+        // Global variables
+        let currentUser = null;
+        let chatMessages = [];
+
+        // Check auth state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                currentUser = user;
+                showChatInterface();
+                loadUserProfile();
+            } else {
+                currentUser = null;
+                showAuthInterface();
+            }
+        });
+
+        function showAuthInterface() {
+            document.getElementById('auth-required').style.display = 'block';
+            document.getElementById('chat-container').style.display = 'none';
+        }
+
+        function showChatInterface() {
+            document.getElementById('auth-required').style.display = 'none';
+            document.getElementById('chat-container').style.display = 'flex';
+        }
+
+        function loadUserProfile() {
+            if (currentUser) {
+                document.getElementById('user-name').textContent = currentUser.displayName || 'User';
+                const avatar = document.getElementById('user-avatar');
+                avatar.textContent = (currentUser.displayName || 'U').charAt(0).toUpperCase();
+            }
+        }
+
+        function login() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .catch((error) => {
+                    console.error('Login error:', error);
+                    alert('Login failed. Please try again.');
+                });
+        }
+
+        function logout() {
+            auth.signOut().catch((error) => {
+                console.error('Logout error:', error);
+            });
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (!message || !currentUser) return;
+
+            // Add user message to chat
+            addMessage(message, 'user');
+            input.value = '';
+
+            // Disable send button
+            const sendBtn = document.getElementById('send-btn');
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<div class="loading"></div>';
+
+            try {
+                // Send to GLM API
+                const response = await fetch(GLM_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${GLM_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: 'glm-4',
+                        messages: [
+                            { role: 'system', content: RILEY_SYSTEM_PROMPT },
+                            { role: 'user', content: message }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 1000
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.choices && data.choices[0]) {
+                    const aiResponse = data.choices[0].message.content;
+                    addMessage(aiResponse, 'ai');
+                    
+                    // Save to Firestore
+                    await saveChatMessage(message, aiResponse);
+                } else {
+                    throw new Error('Invalid API response');
+                }
+            } catch (error) {
+                console.error('API Error:', error);
+                addMessage('I apologize, but I\'m having trouble responding right now. Please try again later.', 'ai');
+            } finally {
+                // Re-enable send button
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Send';
+            }
+        }
+
+        function addMessage(content, sender) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.textContent = content;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        async function saveChatMessage(userMessage, aiResponse) {
+            if (!currentUser) return;
+
+            try {
+                await db.collection('chats').add({
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    userMessage: userMessage,
+                    aiResponse: aiResponse,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            } catch (error) {
+                console.error('Error saving chat message:', error);
+            }
+        }
+    </script>
+</body>
+</html>

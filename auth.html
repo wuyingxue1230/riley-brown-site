@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Riley Brown</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.03) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: #1a1a1a;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 120px 20px;
+        }
+        
+        .back-link {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 4px;
+            margin-bottom: 60px;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .back-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .back-link:hover::after {
+            animation: underlineGlow 0.6s ease-in-out infinite alternate;
+        }
+        
+        .back-link:hover {
+            color: #667eea;
+            transform: translateY(-1px);
+        }
+        
+        @keyframes underlineGlow {
+            0% {
+                transform: scaleX(1);
+                box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+            }
+            100% {
+                transform: scaleX(1);
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.8), 0 0 30px rgba(118, 75, 162, 0.6);
+            }
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+            text-align: center;
+        }
+        
+        .auth-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 50px;
+            font-size: 1.1rem;
+        }
+        
+        .auth-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+        }
+        
+        .auth-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .auth-tab:hover {
+            color: #667eea;
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+        
+        .form-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .auth-btn {
+            width: 100%;
+            background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .auth-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            color: #666;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        
+        .divider span {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .social-btn:hover {
+            background: rgba(0, 0, 0, 0.02);
+            border-color: #667eea;
+        }
+        
+        .social-btn.google {
+            color: #db4437;
+        }
+        
+        .social-btn.github {
+            color: #333;
+        }
+        
+        .auth-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .auth-message.success {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4caf50;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+        
+        .auth-message.error {
+            background: rgba(244, 67, 54, 0.1);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.2);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .user-info {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: none;
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 500;
+        }
+        
+        .user-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+        
+        .user-email {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .auth-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .auth-links a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .auth-links a:hover {
+            color: #764ba2;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 15px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .auth-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Home</a>
+        
+        <h1>Login</h1>
+        <div class="auth-subtitle">Access the chat feature and comment system</div>
+        
+        <div id="auth-container" class="auth-container">
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="switchTab('login')">Login</div>
+                <div class="auth-tab" onclick="switchTab('signup')">Sign Up</div>
+            </div>
+            
+            <div id="auth-message" class="auth-message"></div>
+            
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="login-email" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="login-password" class="form-input" required>
+                </div>
+                <button type="submit" id="login-btn" class="auth-btn">Login</button>
+            </form>
+            
+            <!-- Signup Form -->
+            <form id="signup-form" class="auth-form" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="signup-name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="signup-email" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="signup-password" class="form-input" required>
+                </div>
+                <button type="submit" id="signup-btn" class="auth-btn">Sign Up</button>
+            </form>
+            
+            <div class="divider">
+                <span>Or continue with</span>
+            </div>
+            
+            <div class="social-login">
+                <button class="social-btn google" onclick="loginWithGoogle()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Continue with Google
+                </button>
+                <button class="social-btn github" onclick="loginWithGitHub()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    Continue with GitHub
+                </button>
+            </div>
+        </div>
+        
+        <div id="user-info" class="user-info">
+            <div class="user-avatar" id="user-avatar">U</div>
+            <div class="user-name" id="user-name">User Name</div>
+            <div class="user-email" id="user-email">user@example.com</div>
+            <button class="auth-btn" onclick="logout()">Logout</button>
+            <div class="auth-links">
+                <a href="chat.html">Go to Chat</a> | <a href="index.html">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCENIM80o_yE5ineisKjzUy3apgMt87T-k",
+            authDomain: "website-28dc5.firebaseapp.com",
+            projectId: "website-28dc5",
+            storageBucket: "website-28dc5.firebasestorage.app",
+            messagingSenderId: "247226607208",
+            appId: "1:247226607208:web:4a707d856efb1c7020bddd"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Global variables
+        let currentUser = null;
+
+        // Check auth state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                currentUser = user;
+                showUserInfo();
+                loadUserProfile();
+            } else {
+                currentUser = null;
+                showAuthForm();
+            }
+        });
+
+        function switchTab(tab) {
+            // Update tabs
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.auth-tab:nth-child(${tab === 'login' ? '1' : '2'})`).classList.add('active');
+            
+            // Update forms
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById(`${tab}-form`).classList.add('active');
+            
+            // Hide message
+            hideMessage();
+        }
+
+        function showAuthForm() {
+            document.getElementById('auth-container').style.display = 'block';
+            document.getElementById('user-info').style.display = 'none';
+        }
+
+        function showUserInfo() {
+            document.getElementById('auth-container').style.display = 'none';
+            document.getElementById('user-info').style.display = 'block';
+        }
+
+        function loadUserProfile() {
+            if (currentUser) {
+                document.getElementById('user-name').textContent = currentUser.displayName || 'User';
+                document.getElementById('user-email').textContent = currentUser.email;
+                const avatar = document.getElementById('user-avatar');
+                avatar.textContent = (currentUser.displayName || 'U').charAt(0).toUpperCase();
+            }
+        }
+
+        function showMessage(message, type) {
+            const messageEl = document.getElementById('auth-message');
+            messageEl.textContent = message;
+            messageEl.className = `auth-message ${type}`;
+            messageEl.style.display = 'block';
+            
+            setTimeout(() => {
+                hideMessage();
+            }, 5000);
+        }
+
+        function hideMessage() {
+            const messageEl = document.getElementById('auth-message');
+            messageEl.style.display = 'none';
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const btn = document.getElementById('login-btn');
+            
+            // Show loading
+            btn.disabled = true;
+            btn.innerHTML = '<div class="loading"></div>';
+            
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                showMessage('Login successful!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'chat.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Login error:', error);
+                showMessage(error.message || 'Login failed. Please try again.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Login';
+            }
+        }
+
+        async function handleSignup(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const btn = document.getElementById('signup-btn');
+            
+            // Show loading
+            btn.disabled = true;
+            btn.innerHTML = '<div class="loading"></div>';
+            
+            try {
+                const result = await auth.createUserWithEmailAndPassword(email, password);
+                await result.user.updateProfile({
+                    displayName: name
+                });
+                
+                showMessage('Account created successfully!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'chat.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Signup error:', error);
+                showMessage(error.message || 'Signup failed. Please try again.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Sign Up';
+            }
+        }
+
+        async function loginWithGoogle() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                await auth.signInWithPopup(provider);
+                showMessage('Login successful!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'chat.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Google login error:', error);
+                showMessage(error.message || 'Google login failed. Please try again.', 'error');
+            }
+        }
+
+        async function loginWithGitHub() {
+            try {
+                const provider = new firebase.auth.GithubAuthProvider();
+                await auth.signInWithPopup(provider);
+                showMessage('Login successful!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'chat.html';
+                }, 1000);
+            } catch (error) {
+                console.error('GitHub login error:', error);
+                showMessage(error.message || 'GitHub login failed. Please try again.', 'error');
+            }
+        }
+
+        async function logout() {
+            try {
+                await auth.signOut();
+                showMessage('Logged out successfully!', 'success');
+            } catch (error) {
+                console.error('Logout error:', error);
+                showMessage(error.message || 'Logout failed. Please try again.', 'error');
+            }
+        }
+    </script>
+</body>
+</html>
