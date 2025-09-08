@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riley Brown</title>
+    <title>Echo Wu</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap');
         
@@ -175,6 +175,37 @@
             justify-content: space-between;
             align-items: center;
             margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        
+        .file-input {
+            position: absolute;
+            left: -9999px;
+        }
+        
+        .file-btn {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .file-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
         }
         
         .comment-submit {
@@ -197,6 +228,30 @@
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
+        }
+        
+        .file-preview {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .file-preview-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #667eea;
+        }
+        
+        .file-preview-item .remove-file {
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 5px;
         }
         
         .login-prompt {
@@ -256,6 +311,7 @@
             color: white;
             font-weight: 500;
             font-size: 1.1rem;
+            object-fit: cover;
         }
         
         .comment-info {
@@ -308,6 +364,31 @@
             color: #333;
             line-height: 1.7;
             font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        
+        .comment-files {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .comment-file {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #667eea;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .comment-file:hover {
+            background: rgba(102, 126, 234, 0.2);
         }
         
         .no-comments {
@@ -327,6 +408,31 @@
             animation: spin 1s ease-in-out infinite;
         }
         
+        .file-upload-progress {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #667eea;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 2px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -343,13 +449,22 @@
             .nav-link {
                 font-size: 1.5rem;
             }
+            
+            .comment-form-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .comment-submit {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Riley Brown</h1>
+            <h1>Echo Wu</h1>
             <div class="subtitle">AI Creator & Digital Storyteller</div>
             <div class="location">Hangzhou, China</div>
         </div>
@@ -360,7 +475,7 @@
             <a href="projects.html" class="nav-link">Projects</a>
             <a href="company.html" class="nav-link">Company</a>
             <a href="contact.html" class="nav-link">Contact</a>
-            <a href="chat.html" class="nav-link">Chat with Riley AI</a>
+            <a href="chat.html" class="nav-link">Chat with Echo AI</a>
             <a href="auth.html" class="nav-link">Login</a>
         </nav>
         
@@ -378,9 +493,20 @@
             <!-- Comment Form -->
             <div class="comment-form">
                 <textarea id="comment-input" placeholder="Share your thoughts..." disabled></textarea>
+                <div id="file-upload-progress"></div>
+                <div class="file-preview" id="file-preview"></div>
                 <div class="comment-form-actions">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="file-input" class="file-input" onchange="handleFileSelect(event)" multiple>
+                        <label for="file-input" class="file-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+                            </svg>
+                            Upload Files
+                        </label>
+                    </div>
                     <div class="login-prompt">
-                        <span id="login-status">Please <a href="auth.html">login</a> to comment</span>
+                        <span id="login-status">Please <a href="auth.html">login with Google</a> to comment</span>
                     </div>
                     <button id="comment-submit" class="comment-submit" disabled>Post Comment</button>
                 </div>
@@ -397,26 +523,32 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
+    
+    <!-- Secure Configuration -->
+    <script src="config.js"></script>
     
     <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCENIM80o_yE5ineisKjzUy3apgMt87T-k",
-            authDomain: "website-28dc5.firebaseapp.com",
-            projectId: "website-28dc5",
-            storageBucket: "website-28dc5.firebasestorage.app",
-            messagingSenderId: "247226607208",
-            appId: "1:247226607208:web:4a707d856efb1c7020bddd"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        // Validate configuration before initializing
+        if (!validateConfig()) {
+            document.body.innerHTML = `
+                <div style="padding: 40px; font-family: Inter, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h1 style="color: #f44336;">Configuration Error</h1>
+                    <p>Missing required environment variables. Please contact the administrator.</p>
+                </div>
+            `;
+        } else {
+            // Initialize Firebase with secure configuration
+            firebase.initializeApp(window.APP_CONFIG.firebase);
+        }
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const storage = firebase.storage();
 
         // Global variables
         let currentUser = null;
         let comments = [];
+        let selectedFiles = [];
 
         // Check auth state
         auth.onAuthStateChanged((user) => {
@@ -447,7 +579,92 @@
             commentInput.disabled = true;
             commentSubmit.disabled = true;
             commentInput.value = '';
-            loginStatus.innerHTML = 'Please <a href="auth.html">login</a> to comment';
+            loginStatus.innerHTML = 'Please <a href="auth.html">login with Google</a> to comment';
+            clearFilePreview();
+        }
+
+        function handleFileSelect(event) {
+            const files = Array.from(event.target.files);
+            selectedFiles = files;
+            updateFilePreview();
+        }
+
+        function updateFilePreview() {
+            const preview = document.getElementById('file-preview');
+            preview.innerHTML = '';
+            
+            selectedFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-preview-item';
+                fileItem.innerHTML = `
+                    📎 ${file.name}
+                    <span class="remove-file" onclick="removeFile(${index})">×</span>
+                `;
+                preview.appendChild(fileItem);
+            });
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            updateFilePreview();
+            
+            // Reset file input
+            const fileInput = document.getElementById('file-input');
+            fileInput.value = '';
+        }
+
+        function clearFilePreview() {
+            document.getElementById('file-preview').innerHTML = '';
+            selectedFiles = [];
+            document.getElementById('file-input').value = '';
+            document.getElementById('file-upload-progress').innerHTML = '';
+        }
+
+        async function uploadFiles() {
+            const progressContainer = document.getElementById('file-upload-progress');
+            progressContainer.innerHTML = '';
+            
+            const fileUrls = [];
+            
+            for (let i = 0; i < selectedFiles.length; i++) {
+                const file = selectedFiles[i];
+                const fileProgress = document.createElement('div');
+                fileProgress.className = 'file-upload-progress';
+                fileProgress.innerHTML = `
+                    <div>Uploading ${file.name}...</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                `;
+                progressContainer.appendChild(fileProgress);
+                
+                try {
+                    const storageRef = storage.ref(`comment-files/${currentUser.uid}/${Date.now()}_${file.name}`);
+                    const uploadTask = storageRef.put(file);
+                    
+                    uploadTask.on('state_changed', (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        const progressFill = fileProgress.querySelector('.progress-fill');
+                        progressFill.style.width = progress + '%';
+                    });
+                    
+                    await uploadTask;
+                    const downloadURL = await storageRef.getDownloadURL();
+                    fileUrls.push({
+                        name: file.name,
+                        url: downloadURL,
+                        size: file.size
+                    });
+                    
+                    fileProgress.remove();
+                    
+                } catch (error) {
+                    console.error('File upload error:', error);
+                    fileProgress.innerHTML = `<div style="color: #f44336;">Failed to upload ${file.name}</div>`;
+                }
+            }
+            
+            return fileUrls;
         }
 
         // Submit comment
@@ -462,17 +679,25 @@
             submitBtn.innerHTML = '<div class="loading"></div>';
 
             try {
+                let fileUrls = [];
+                if (selectedFiles.length > 0) {
+                    fileUrls = await uploadFiles();
+                }
+
                 await db.collection('comments').add({
                     userId: currentUser.uid,
                     userEmail: currentUser.email,
                     userName: currentUser.displayName || 'Anonymous',
                     userAvatar: (currentUser.displayName || 'A').charAt(0).toUpperCase(),
+                    userPhotoURL: currentUser.photoURL || null,
                     content: content,
+                    files: fileUrls,
                     likes: [],
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
                 commentInput.value = '';
+                clearFilePreview();
                 showMessage('Comment posted successfully!', 'success');
             } catch (error) {
                 console.error('Error posting comment:', error);
@@ -515,10 +740,31 @@
             const isLiked = currentUser && comment.likes.includes(currentUser.uid);
             const likeCount = comment.likes.length;
             
+            let filesHtml = '';
+            if (comment.files && comment.files.length > 0) {
+                filesHtml = '<div class="comment-files">';
+                comment.files.forEach(file => {
+                    filesHtml += `
+                        <a href="${file.url}" target="_blank" class="comment-file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M12,19L8,15H10.5V12H13.5V15H16L12,19Z" />
+                            </svg>
+                            ${file.name}
+                        </a>
+                    `;
+                });
+                filesHtml += '</div>';
+            }
+            
             commentDiv.innerHTML = `
                 <div class="comment-header">
                     <div class="comment-author">
-                        <div class="comment-avatar">${comment.userAvatar}</div>
+                        <div class="comment-avatar">
+                            ${comment.userPhotoURL ? 
+                                `<img src="${comment.userPhotoURL}" alt="${comment.userName}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">` : 
+                                comment.userAvatar
+                            }
+                        </div>
                         <div class="comment-info">
                             <div class="comment-name">${comment.userName}</div>
                             <div class="comment-time">${formatTimestamp(comment.timestamp)}</div>
@@ -534,6 +780,7 @@
                     </div>
                 </div>
                 <div class="comment-content">${comment.content}</div>
+                ${filesHtml}
             `;
             
             commentsList.appendChild(commentDiv);

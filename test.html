@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Test - Riley Brown</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Firebase Configuration Test</h1>
+    
+    <div class="test-section">
+        <h2>Firebase Initialization</h2>
+        <div id="firebase-status">Testing...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Authentication Test</h2>
+        <div id="auth-status">Not tested</div>
+        <button id="test-login-btn" onclick="testGoogleLogin()">Test Google Login</button>
+        <button id="check-auth-btn" onclick="checkAuthStatus()">Check Auth Status</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Current Domain</h2>
+        <div id="domain-info"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>User Info</h2>
+        <div id="user-info">No user logged in</div>
+        <button id="logout-btn" onclick="logout()" style="display: none;">Logout</button>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    
+      <!-- Secure Configuration -->
+    <script src="config.js"></script>
+    
+    <script>
+        let auth;
+        let currentUser = null;
+
+        // Test Firebase initialization
+        function testFirebase() {
+            try {
+                if (!validateConfig()) {
+                    document.getElementById('firebase-status').innerHTML = '<div class="error">❌ Missing environment variables. Please check Vercel configuration.</div>';
+                    return;
+                }
+                firebase.initializeApp(window.APP_CONFIG.firebase);
+                auth = firebase.auth();
+                document.getElementById('firebase-status').innerHTML = '<div class="success">✅ Firebase initialized successfully</div>';
+                document.getElementById('domain-info').innerHTML = '<div class="info">Current domain: ' + window.location.hostname + '</div>';
+                
+                // Set up auth state listener
+                auth.onAuthStateChanged((user) => {
+                    if (user) {
+                        currentUser = user;
+                        showUserInfo(user);
+                    } else {
+                        currentUser = null;
+                        document.getElementById('user-info').innerHTML = 'No user logged in';
+                        document.getElementById('logout-btn').style.display = 'none';
+                    }
+                });
+                
+            } catch (error) {
+                document.getElementById('firebase-status').innerHTML = '<div class="error">❌ Firebase initialization failed: ' + error.message + '</div>';
+            }
+        }
+
+        function testGoogleLogin() {
+            if (!auth) {
+                alert('Firebase not initialized');
+                return;
+            }
+
+            const btn = document.getElementById('test-login-btn');
+            btn.disabled = true;
+            btn.textContent = 'Testing...';
+
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    document.getElementById('auth-status').innerHTML = '<div class="success">✅ Google login successful!</div>';
+                })
+                .catch((error) => {
+                    console.error('Login error:', error);
+                    let errorMessage = 'Login failed: ' + error.message;
+                    
+                    if (error.code === 'auth/unauthorized-domain') {
+                        errorMessage = '❌ Domain not authorized. Please add this domain to Firebase console:<br>https://console.firebase.google.com/project/website-28dc5/authentication/providers<br><br>Domain to add: ' + window.location.hostname;
+                    }
+                    
+                    document.getElementById('auth-status').innerHTML = '<div class="error">' + errorMessage + '</div>';
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.textContent = 'Test Google Login';
+                });
+        }
+
+        function checkAuthStatus() {
+            if (!auth) {
+                document.getElementById('auth-status').innerHTML = '<div class="error">Firebase not initialized</div>';
+                return;
+            }
+
+            const user = auth.currentUser;
+            if (user) {
+                document.getElementById('auth-status').innerHTML = '<div class="success">✅ User is logged in: ' + user.email + '</div>';
+            } else {
+                document.getElementById('auth-status').innerHTML = '<div class="info">ℹ️ No user currently logged in</div>';
+            }
+        }
+
+        function showUserInfo(user) {
+            const userInfo = document.getElementById('user-info');
+            userInfo.innerHTML = `
+                <div class="success">
+                    <strong>User logged in:</strong><br>
+                    Name: ${user.displayName || 'N/A'}<br>
+                    Email: ${user.email}<br>
+                    UID: ${user.uid}<br>
+                    Photo URL: ${user.photoURL || 'N/A'}
+                </div>
+            `;
+            document.getElementById('logout-btn').style.display = 'block';
+        }
+
+        function logout() {
+            if (auth) {
+                auth.signOut()
+                    .then(() => {
+                        document.getElementById('auth-status').innerHTML = '<div class="info">ℹ️ User logged out successfully</div>';
+                    })
+                    .catch((error) => {
+                        document.getElementById('auth-status').innerHTML = '<div class="error">❌ Logout failed: ' + error.message + '</div>';
+                    });
+            }
+        }
+
+        // Run tests when page loads
+        window.addEventListener('load', function() {
+            testFirebase();
+            checkAuthStatus();
+        });
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat with Riley AI - Riley Brown</title>
+    <title>Chat with Echo AI - Echo Wu</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap');
         
@@ -168,6 +168,7 @@
             padding: 15px 20px;
             border-radius: 18px;
             line-height: 1.5;
+            word-wrap: break-word;
         }
         
         .message.user {
@@ -182,11 +183,100 @@
             align-self: flex-start;
         }
         
+        .file-attachment {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .file-attachment.user {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .file-attachment.ai {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .file-icon {
+            width: 24px;
+            height: 24px;
+            color: #667eea;
+        }
+        
+        .file-info {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        
+        .file-size {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .file-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .file-link:hover {
+            text-decoration: underline;
+        }
+        
         .chat-input-container {
             padding: 20px;
             border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .input-actions {
             display: flex;
             gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        
+        .file-input {
+            position: absolute;
+            left: -9999px;
+        }
+        
+        .file-btn {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .file-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+        }
+        
+        .chat-input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
         }
         
         .chat-input {
@@ -198,6 +288,9 @@
             font-family: 'Inter', sans-serif;
             outline: none;
             transition: border-color 0.3s ease;
+            resize: none;
+            min-height: 50px;
+            max-height: 120px;
         }
         
         .chat-input:focus {
@@ -213,6 +306,10 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 1rem;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .send-btn:hover {
@@ -249,6 +346,7 @@
             justify-content: center;
             color: white;
             font-weight: 500;
+            object-fit: cover;
         }
         
         .logout-btn {
@@ -275,6 +373,31 @@
             animation: spin 1s ease-in-out infinite;
         }
         
+        .file-upload-progress {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #667eea;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 2px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -295,6 +418,16 @@
             .chat-container {
                 height: 75vh;
             }
+            
+            .chat-input-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .send-btn {
+                width: 100%;
+                margin-top: 10px;
+            }
         }
     </style>
 </head>
@@ -302,12 +435,12 @@
     <div class="container">
         <a href="index.html" class="back-link">← Home</a>
         
-        <h1>Chat with Riley AI</h1>
+        <h1>Chat with Echo AI</h1>
         <div class="chat-subtitle">Ask me anything about AI, content creation, or my projects</div>
         
         <div id="auth-required" class="auth-required">
             <h2>Login Required</h2>
-            <p>Please login to chat with Riley AI</p>
+            <p>Please login with Google to chat with Echo AI</p>
             <button class="login-btn" onclick="login()">Login with Google</button>
         </div>
         
@@ -327,13 +460,27 @@
             
             <div id="chat-messages" class="chat-messages">
                 <div class="message ai">
-                    Hello! I'm Riley AI, an AI assistant based on Riley Brown. I'm here to help you with questions about AI, content creation, my projects, and anything else you'd like to know. How can I assist you today?
+                    Hello! I'm Echo AI, an AI assistant based on Echo Wu. I'm here to help you with questions about AI, content creation, my projects, and anything else you'd like to know. You can also send me files to analyze! How can I assist you today?
                 </div>
             </div>
             
             <div class="chat-input-container">
-                <input type="text" id="chat-input" class="chat-input" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
-                <button id="send-btn" class="send-btn" onclick="sendMessage()">Send</button>
+                <div class="input-actions">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="file-input" class="file-input" onchange="handleFileSelect(event)" multiple>
+                        <label for="file-input" class="file-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+                            </svg>
+                            Upload File
+                        </label>
+                    </div>
+                </div>
+                <div id="file-upload-progress"></div>
+                <div class="chat-input-wrapper">
+                    <textarea id="chat-input" class="chat-input" placeholder="Type your message..." onkeypress="handleKeyPress(event)" rows="1"></textarea>
+                    <button id="send-btn" class="send-btn" onclick="sendMessage()">Send</button>
+                </div>
             </div>
         </div>
     </div>
@@ -342,33 +489,38 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
+    
+    <!-- Secure Configuration -->
+    <script src="config.js"></script>
     
     <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCENIM80o_yE5ineisKjzUy3apgMt87T-k",
-            authDomain: "website-28dc5.firebaseapp.com",
-            projectId: "website-28dc5",
-            storageBucket: "website-28dc5.firebasestorage.app",
-            messagingSenderId: "247226607208",
-            appId: "1:247226607208:web:4a707d856efb1c7020bddd"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        // Validate configuration before initializing
+        if (!validateConfig()) {
+            document.body.innerHTML = `
+                <div style="padding: 40px; font-family: Inter, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h1 style="color: #f44336;">Configuration Error</h1>
+                    <p>Missing required environment variables. Please contact the administrator.</p>
+                </div>
+            `;
+        } else {
+            // Initialize Firebase with secure configuration
+            firebase.initializeApp(window.APP_CONFIG.firebase);
+        }
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const storage = firebase.storage();
 
         // GLM API Configuration
-        const GLM_API_KEY = "8bcff0a70a6b4044a91169e6a3285206.Ud3hh5YpMAkIa3wC";
+        const GLM_API_KEY = window.APP_CONFIG.glm.apiKey;
         const GLM_API_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
 
-        // Riley AI System Prompt
-        const RILEY_SYSTEM_PROMPT = `You are Riley AI, an AI assistant based on Riley Brown. Here's information about Riley Brown:
+        // Echo AI System Prompt
+        const ECHO_SYSTEM_PROMPT = `You are Echo AI, an AI assistant based on Echo Wu. Here's information about Echo Wu:
 
-**Identity**: Riley Brown is an AI creator and digital storyteller based in Hangzhou, China. He explores the intersection of artificial intelligence and human creativity through compelling digital experiences and innovative storytelling.
+**Identity**: Echo Wu is an AI creator and digital storyteller based in Hangzhou, China. She explores the intersection of artificial intelligence and human creativity through compelling digital experiences and innovative storytelling.
 
-**Background**: Riley has established himself as a thought leader in the AI content creation space, focusing on democratizing AI technology and making it accessible to creators and businesses. His work combines technical precision with artistic vision.
+**Background**: Echo has established herself as a thought leader in the AI content creation space, focusing on democratizing AI technology and making it accessible to creators and businesses. His work combines technical precision with artistic vision.
 
 **Expertise**:
 - AI content creation and digital storytelling
@@ -403,19 +555,21 @@
 - Enthusiastic about helping others learn and create
 - Professional yet conversational tone
 
-As Riley AI, you should:
-1. Respond as if you are Riley Brown, sharing his knowledge and experiences
+As Echo AI, you should:
+1. Respond as if you are Echo Wu, sharing her knowledge and experiences
 2. Be helpful and informative about AI, content creation, and technology
 3. Show enthusiasm for the intersection of AI and creativity
-4. Provide practical advice and insights based on Riley's expertise
+4. Provide practical advice and insights based on Echo's expertise
 5. Be conversational and engaging while maintaining professionalism
-6. When appropriate, mention Riley's location in Hangzhou, China
-7. Feel free to discuss Riley's projects, videos, and company initiatives
-8. Always maintain a positive and encouraging attitude toward AI and creativity`;
+6. When appropriate, mention Echo's location in Hangzhou, China
+7. Feel free to discuss Echo's projects, videos, and company initiatives
+8. Always maintain a positive and encouraging attitude toward AI and creativity
+9. If users upload files, analyze them and provide helpful insights about the content`;
 
         // Global variables
         let currentUser = null;
         let chatMessages = [];
+        let selectedFiles = [];
 
         // Check auth state
         auth.onAuthStateChanged((user) => {
@@ -443,7 +597,12 @@ As Riley AI, you should:
             if (currentUser) {
                 document.getElementById('user-name').textContent = currentUser.displayName || 'User';
                 const avatar = document.getElementById('user-avatar');
-                avatar.textContent = (currentUser.displayName || 'U').charAt(0).toUpperCase();
+                
+                if (currentUser.photoURL) {
+                    avatar.innerHTML = `<img src="${currentUser.photoURL}" alt="${currentUser.displayName}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+                } else {
+                    avatar.textContent = (currentUser.displayName || 'U').charAt(0).toUpperCase();
+                }
             }
         }
 
@@ -463,9 +622,67 @@ As Riley AI, you should:
         }
 
         function handleKeyPress(event) {
-            if (event.key === 'Enter') {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
                 sendMessage();
             }
+        }
+
+        function handleFileSelect(event) {
+            const files = Array.from(event.target.files);
+            selectedFiles = files;
+            
+            if (files.length > 0) {
+                uploadFiles(files);
+            }
+        }
+
+        async function uploadFiles(files) {
+            const progressContainer = document.getElementById('file-upload-progress');
+            progressContainer.innerHTML = '';
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const fileProgress = document.createElement('div');
+                fileProgress.className = 'file-upload-progress';
+                fileProgress.innerHTML = `
+                    <div>Uploading ${file.name}...</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                `;
+                progressContainer.appendChild(fileProgress);
+                
+                try {
+                    const storageRef = storage.ref(`chat-files/${currentUser.uid}/${Date.now()}_${file.name}`);
+                    const uploadTask = storageRef.put(file);
+                    
+                    uploadTask.on('state_changed', (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        const progressFill = fileProgress.querySelector('.progress-fill');
+                        progressFill.style.width = progress + '%';
+                    });
+                    
+                    await uploadTask;
+                    const downloadURL = await storageRef.getDownloadURL();
+                    
+                    // Add file attachment to chat input
+                    addFileAttachment(file, downloadURL);
+                    
+                    // Remove progress indicator
+                    fileProgress.remove();
+                    
+                } catch (error) {
+                    console.error('File upload error:', error);
+                    fileProgress.innerHTML = `<div style="color: #f44336;">Failed to upload ${file.name}</div>`;
+                }
+            }
+        }
+
+        function addFileAttachment(file, downloadURL) {
+            const chatInput = document.getElementById('chat-input');
+            const fileInfo = `\n📎 [${file.name}](${downloadURL})`;
+            chatInput.value += fileInfo;
         }
 
         async function sendMessage() {
@@ -477,6 +694,7 @@ As Riley AI, you should:
             // Add user message to chat
             addMessage(message, 'user');
             input.value = '';
+            selectedFiles = [];
 
             // Disable send button
             const sendBtn = document.getElementById('send-btn');
@@ -494,7 +712,7 @@ As Riley AI, you should:
                     body: JSON.stringify({
                         model: 'glm-4',
                         messages: [
-                            { role: 'system', content: RILEY_SYSTEM_PROMPT },
+                            { role: 'system', content: ECHO_SYSTEM_PROMPT },
                             { role: 'user', content: message }
                         ],
                         temperature: 0.7,
@@ -527,7 +745,21 @@ As Riley AI, you should:
             const messagesContainer = document.getElementById('chat-messages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${sender}`;
-            messageDiv.textContent = content;
+            
+            // Process file links in messages
+            const processedContent = content.replace(/📎 \[([^\]]+)\]\(([^)]+)\)/g, (match, fileName, fileUrl) => {
+                return `<div class="file-attachment ${sender}">
+                    <svg class="file-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M12,19L8,15H10.5V12H13.5V15H16L12,19Z" />
+                    </svg>
+                    <div class="file-info">
+                        <div class="file-name">${fileName}</div>
+                        <a href="${fileUrl}" target="_blank" class="file-link">View File</a>
+                    </div>
+                </div>`;
+            });
+            
+            messageDiv.innerHTML = processedContent || content;
             messagesContainer.appendChild(messageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
@@ -547,6 +779,13 @@ As Riley AI, you should:
                 console.error('Error saving chat message:', error);
             }
         }
+
+        // Auto-resize textarea
+        const chatInput = document.getElementById('chat-input');
+        chatInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
     </script>
 </body>
 </html>
